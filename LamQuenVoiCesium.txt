@@ -1,0 +1,32 @@
+// Your access token can be found at: https://cesium.com/ion/tokens.
+// This is the default access token from your ion account
+
+Cesium.Ion.defaultAccessToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4MTI4YjU4ZS05M2I2LTQwMTAtOTEyMS01MGZiZmYwYWZmZjIiLCJpZCI6NzY0MjcsImlhdCI6MTYzOTQ0OTIyNH0.dN_LLPe0iC_dpb5SwUlSOIN9S0xqa-B0xgzEFPi1oDY";
+
+// Initialize the Cesium Viewer in the HTML element with the `cesiumContainer` ID.
+const viewer = new Cesium.Viewer("cesiumContainer", {
+  terrainProvider: Cesium.createWorldTerrain(),
+});
+// Add Cesium OSM Buildings, a global 3D buildings layer.
+const buildingTileset = viewer.scene.primitives.add(
+  Cesium.createOsmBuildings()
+);
+// Fly the camera to the given longitude, latitude, and height.
+viewer.camera.flyTo({
+  destination: Cesium.Cartesian3.fromDegrees(105.7127935, 19.1845563, 300),
+  orientation: {
+      heading: Cesium.Math.toRadians(20.0),
+      pitch: Cesium.Math.toRadians(-35.0),
+      roll: 0.0,
+    },
+});
+
+// Click & display toa do
+var handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
+handler.setInputAction(function (event) {
+  var pickedPosition = viewer.scene.pickPosition(event.position);
+  if (Cesium.defined(pickedPosition)) {
+    console.log(pickedPosition);
+  }
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
